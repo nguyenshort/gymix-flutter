@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "485165006027",
+    "firebase_url": "https://gymix-8fc00-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gymix-8fc00",
+    "storage_bucket": "gymix-8fc00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485165006027:android:00f195d975001ec65eef4e",
+        "android_client_info": {
+          "package_name": "com.example.gymix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485165006027-gd6lo27bnd43ocajb04j5acgjdk51v5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtiSB6ROoFg0wM-eEOQMTj18_hArfvjDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485165006027-gd6lo27bnd43ocajb04j5acgjdk51v5a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "485165006027-r9oefc2qlgmdpm0scuu7s2llp82cqjs3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gymix"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
