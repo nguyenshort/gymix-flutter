@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gymix/components/composable/composable_alert.dart';
 
 import '../components/composable/composable_slide.dart';
 import '../controllers/composable.controller.dart';
@@ -25,7 +26,7 @@ class ComposableView extends StatelessWidget {
 
           actions: [
 
-            IconButton(onPressed: () => c.toogleBookmark(), icon: Obx(() => c.bookmarked.isTrue ? const Icon(Icons.check) : const Icon(Icons.bookmark)))
+            IconButton(onPressed: () => c.toogleBookmark(), icon: Obx(() => c.$bookmarked ? const Icon(Icons.check) : const Icon(Icons.bookmark)))
 
           ],
         ),
@@ -33,11 +34,15 @@ class ComposableView extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              children: const [
+              children: [
 
-                SizedBox(height: 50),
+                const SizedBox(height: 20),
 
-                ComposableSlide()
+                ComposableAlert(),
+
+                const SizedBox(height: 50),
+
+                const ComposableSlide()
 
               ],
             ),

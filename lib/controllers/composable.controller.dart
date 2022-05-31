@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gymix/models/bookmark.dart';
 import 'package:gymix/models/exercise.dart';
 
 import '../services/firebase.dart';
@@ -10,14 +13,23 @@ import '../theme/color.dart';
 
 class ComposableController extends GetxController {
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   RxBool ready = RxBool(false);
   Rx<Exercise?> exercise = Rx<Exercise?>(null);
   RxInt currentStep = RxInt(0);
 
-  RxBool bookmarked = RxBool(false);
+  Rx<Bookmark?> bookmark = Rx<Bookmark?>(null);
+  bool get $bookmarked {
+    return bookmark.value != null;
+  }
   RxBool bookmarking = RxBool(false);
 
   TimeOfDay initialTime = TimeOfDay.now();
+
+  RxBool started = RxBool(false);
+  RxInt countTime = RxInt(0);
+  Timer? timer;
 
   @override
   void onInit() {
@@ -52,10 +64,16 @@ class ComposableController extends GetxController {
   Future<void> checkBookmark() async {
     try {
 
-      DataSnapshot data = await bookmarksRef.child(Get.arguments["id"]).get();
+      DataSnapshot data = await bookmarksRef.child(auth.currentUser!.uid).child(Get.arguments["id"]).get();
 
-      bookmarked.value = data.exists;
-      bookmarked.refresh();
+      if(data.exists) {
+        final values = jsonDecode(jsonEncode(data.value)) as Map<String, dynamic>;
+        bookmark.value = Bookmark.fromJson(values);
+      } else {
+        bookmark.value = null;
+      }
+
+      bookmark.refresh();
 
     } catch (_) {}
   }
@@ -65,7 +83,7 @@ class ComposableController extends GetxController {
       return;
     }
     bookmarking.value = true;
-    if(bookmarked.isTrue) {
+    if($bookmarked) {
       removeBookmark();
     } else {
       // addBookmark();
@@ -103,9 +121,9 @@ class ComposableController extends GetxController {
   Future<void> addBookmark(String time) async {
     try {
 
-      await bookmarksRef.child(Get.arguments["id"]).set(
+      await bookmarksRef.child(auth.currentUser!.uid).child(Get.arguments["id"]).set(
         {
-          "exercise": exercise.value?.toJson(),
+          /*"exercise": exercise.value?.toJson(),*/
           "time": time,
           "done": false
         }
@@ -122,10 +140,42 @@ class ComposableController extends GetxController {
 
   Future<void> removeBookmark() async {
     try {
-      await bookmarksRef.child(Get.arguments["id"]).remove();
+      await bookmarksRef.child(auth.currentUser!.uid).child(Get.arguments["id"]).remove();
       Get.rawSnackbar(message: "Tạo thao tác", animationDuration: const Duration(milliseconds: 300), backgroundColor: kPrimaryColor);
       await checkBookmark();
     } catch (_) {}
+  }
+
+  void clearTimer() {
+    started.value = false;
+    timer?.cancel();
+    countTime.value = 0;
+  }
+
+  void startTimer() {
+    if(started.value) {
+      return;
+    }
+    // runs every 1 second
+    started.value = true;
+    countTime.value = 0;
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      countTime.value = timer.tick;
+    });
+
+  }
+
+  Future<void> doneAction() async {
+    await bookmarksRef.child(auth.currentUser!.uid).child(Get.arguments["id"]).set(
+        {
+          "time": bookmark.value!.time,
+          "done": true
+        }
+    );
+
+    Get.rawSnackbar(message: "Đã hoàn thành bài tập", animationDuration: const Duration(milliseconds: 300), backgroundColor: kPrimaryColor);
+
+    await checkBookmark();
   }
 
 }
