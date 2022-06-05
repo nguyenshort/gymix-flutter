@@ -12,6 +12,15 @@ class HomeController extends GetxController {
 
   RxInt currentTab = RxInt(0);
 
+  RxString keyword = RxString('');
+
+  List<Exercise> get showData {
+    RegExp regExp = RegExp(r'' + keyword.value.toLowerCase() + '');
+    return exercises.where(
+            (p0) => regExp.hasMatch(p0.name.toLowerCase())
+    ).toList();
+  }
+
   @override
   void onInit() {
     // addExample();

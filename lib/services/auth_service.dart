@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:gymix/models/user_data.dart';
+import 'package:gymix/view/auth_view.dart';
 
 import 'firebase.dart';
 
@@ -63,6 +64,12 @@ class AuthService extends GetxService {
     } catch (e) {
       Get.rawSnackbar(message: "Cập nhật thất bại", animationDuration: const Duration(milliseconds: 300));
     }
+  }
+
+  Future<void> signOut() async {
+    Get.rawSnackbar(message: "Đăng xuất thành công", animationDuration: const Duration(milliseconds: 300));
+    Get.offNamed(AuthView.route);
+    auth.signOut();
   }
 
 }

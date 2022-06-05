@@ -174,7 +174,31 @@ class SettingTab extends StatelessWidget {
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: const Center(
-                              child: Text('Đăng Nhập', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)),
+                              child: Text('Cập Nhật', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                        )
+                    ),
+
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    TextButton(
+                        style: ElevatedButton.styleFrom(
+                          splashFactory: NoSplash.splashFactory,
+                        ),
+                        onPressed: () {
+                          authService.signOut();
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Container(
+                            color: Colors.deepOrangeAccent,
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: const Center(
+                              child: Text('Đăng Xuất', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)),
                             ),
                           ),
                         )

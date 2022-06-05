@@ -6,6 +6,8 @@ import 'package:gymix/components/home/home_exercises.dart';
 import 'package:gymix/controllers/home.controller.dart';
 
 import '../components/home/setting_tab.dart';
+import '../theme/color.dart';
+import '../theme/input.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Obx(() => c.currentTab.value == 0 ? const _HomeTab() : SettingTab()),
+        child: Obx(() => c.currentTab.value == 0 ? _HomeTab() : SettingTab()),
       ),
       bottomNavigationBar: HomeBottomBar(),
     );
@@ -27,7 +29,9 @@ class HomeView extends StatelessWidget {
 }
 
 class _HomeTab extends StatelessWidget {
-  const _HomeTab({Key? key}) : super(key: key);
+  _HomeTab({Key? key}) : super(key: key);
+
+  final HomeController c = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,7 @@ class _HomeTab extends StatelessWidget {
                 child: SizedBox(
                   width: 50,
                   height: 50,
+                  // Todo: Đổi ảnh đại diện mẫu
                   child: CachedNetworkImage(
                     imageUrl: "https://avatars.githubusercontent.com/u/909802",
                     width: double.infinity,
@@ -71,8 +76,29 @@ class _HomeTab extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
+
                   const SizedBox(
-                    height: 50,
+                    height: 10,
+                  ),
+
+                  TextField(
+                    onChanged: (text) => c.keyword.value = text,
+                    decoration: kPrimaryInput.copyWith(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        hintText: 'Search...',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            borderSide: const BorderSide(
+                                width: 0,
+                                style: BorderStyle.none
+                            )
+                        )
+                    ),
+                    cursorColor: kTextColor.withOpacity(0.5),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
                   ),
                   Row(
                     children: const [

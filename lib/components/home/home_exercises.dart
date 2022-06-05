@@ -15,7 +15,7 @@ class HomeExercises extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) => GestureDetector(
-        onTap: () => Get.toNamed(ComposableView.route, arguments: { "id": c.exercises[index].path }),
+        onTap: () => Get.toNamed(ComposableView.route, arguments: { "id": c.showData[index].path }),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
@@ -27,25 +27,27 @@ class HomeExercises extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        c.exercises[index].name,
+                        c.showData[index].name,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)
                     ),
                     const SizedBox(height: 10),
-                    Text(c.exercises[index].level, style: const TextStyle(fontSize: 14)),
+                    Text(c.showData[index].level, style: const TextStyle(fontSize: 14)),
                     const SizedBox(height: 10),
-                    Text("${c.exercises[index].count} Bài Tập", style: const TextStyle(fontSize: 14, color: Colors.grey))
+                    Text("${c.showData[index].count} Bài Tập", style: const TextStyle(fontSize: 14, color: Colors.grey))
                   ],
                 ),
 
                 const Spacer(),
 
-                CachedNetworkImage(imageUrl: "https://i.imgur.com/W7oZwHy.png", height: 100)
+                // Todo: Đổi ảnH CHO BÀI TẬP
+                // "https://i.imgur.com/W7oZwHy.png" => c.showData[index].avatar
+                CachedNetworkImage(imageUrl: 'https://i.imgur.com/W7oZwHy.png', height: 100)
               ],
             ),
           ),
         ),
       ),
-      itemCount: c.exercises.length,
+      itemCount: c.showData.length,
       separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 25),
     ));
   }
